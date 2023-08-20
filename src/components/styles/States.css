@@ -5,6 +5,29 @@
   font-size: 20px;
 }
 
+.mv-states__loading {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    gap: 20px;
+    color: rgb(5, 70, 116);
+}
+
+.mv-states__loading__text {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+}
+
+.mv-states__loading__text__subtitle {
+    font-size: 16px;
+    color: rgb(80, 80, 80);
+}
+
 .mv-states__json-view {
     flex: 1;
     padding: 10px;

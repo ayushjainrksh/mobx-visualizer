@@ -4,30 +4,28 @@ import { parse } from 'flatted';
 import './styles/States.css';
 
 const sampleData = {
-  'mobxVisualizer': {
-    'sampleStore': {
-      'storeData': [
+  mobxVisualizer: {
+    sampleStore: {
+      storeData: [
         'abc'
       ]
     }
   }
 };
 
-const States = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [mobxStore, setMobxStore] = useState<any>(sampleData.mobxVisualizer),
-    [filters, setFilters] = useState(''),
-    [searchValue, setSearchValue] = useState(''),
-    [isLoading, setIsLoading] = useState(true);
+const States = (): JSX.Element => {
+  const [mobxStore, setMobxStore] = useState<Record<string, any>>(sampleData.mobxVisualizer);
+  const [filters, setFilters] = useState<string>('');
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const filteredStores = filters ? mobxStore[filters] : mobxStore;
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     chrome?.runtime?.onMessage && chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-      if(message?.mobxVisualizerData?.mobxVisualizer) {
+      if (message?.mobxVisualizerData?.mobxVisualizer) {
         chrome.tabs.query({ active: true, lastFocusedWindow: true }, ([tab]) => {
-          if(tab.id === sender?.tab?.id) {
+          if (tab.id === sender?.tab?.id) {
             setMobxStore(parse(message?.mobxVisualizerData?.mobxVisualizer));
             setIsLoading(false);
           }
@@ -36,15 +34,15 @@ const States = () => {
     });
   }, []);
 
-  const renderStores = () => {
+  const renderStores = (): JSX.Element[] => {
     const storeList = [];
-    for(const store in mobxStore) {
-      if(searchValue && !store.toLowerCase().includes(searchValue.toLowerCase())) continue;
+    for (const store in mobxStore) {
+      if (searchValue && !store.toLowerCase().includes(searchValue.toLowerCase())) continue;
 
       storeList.push(
         <div
           className={`mv-states__stores__item ${filters === store ? 'mv-states__stores__item--selected' : ''}`}
-          onClick={() => setFilters(store)}
+          onClick={() => { setFilters(store); }}
         >
           {store}
         </div>
@@ -57,22 +55,22 @@ const States = () => {
   return (
     <div className='mv-states'>
       {
-        isLoading ?
-          <div className='mv-states__loading'>
+        isLoading
+          ? <div className='mv-states__loading'>
             <img src='/logo192.png' alt='Mobx Visualizer logo'/>
             <div className='mv-states__loading__text'>
               <span className='mv-states__loading__text__title'>Connecting Mobx store...</span>
               <span className='mv-states__loading__text__subtitle'>Please refresh your tab if it takes too long to connect</span>
             </div>
-          </div> :
-          <>
+          </div>
+          : <>
             <div className='mv-states__stores'>
               {
-                <div className='mv-states__stores__action' onClick={() => setFilters('')}>
+                <div className='mv-states__stores__action' onClick={() => { setFilters(''); }}>
                   {
-                    filters ?
-                      'Clear filter' :
-                      'Filter stores'
+                    filters
+                      ? 'Clear filter'
+                      : 'Filter stores'
                   }
                 </div>
               }
@@ -82,7 +80,7 @@ const States = () => {
                     type='text'
                     placeholder='Search stores'
                     value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
+                    onChange={(e) => { setSearchValue(e.target.value); }}
                   />
                 </div>
               }

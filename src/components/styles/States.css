@@ -20,7 +20,8 @@
 
 .mv-states__stores {
     height: 300px;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -29,10 +30,12 @@
 
 .mv-states__stores__item {
     cursor: pointer;
-    white-space: nowrap; 
+    white-space: normal; 
     width: 150px; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
+    overflow-wrap: break-word;
+    color:#3889be;
+    padding-bottom: 6px;
+    border-bottom: 0.5px dashed #98d1f6;
 }
 
 .mv-states__stores__item--selected {
@@ -48,4 +51,21 @@
 
 .mv-states__stores__item:hover {
     text-decoration: underline;
+}
+
+.mv-states__stores__search {
+    border: 1px solid #c5c3c3;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.mv-states__stores__search > input {
+    height: 26px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    background: none;
+    padding-left: 8px;
+    width: 100%;
 }

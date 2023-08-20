@@ -1,3 +1,5 @@
+/*! (c) 2020 Andrea Giammarchi */
+
 /**
  * @license React
  * react-dom.production.min.js

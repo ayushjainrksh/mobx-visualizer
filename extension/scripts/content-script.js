@@ -9,7 +9,7 @@ function injectScript(file_path, tag) {
 // eslint-disable-next-line no-undef
 injectScript(chrome.runtime.getURL('scripts/inject-script.js'), 'body');
 
-window.addEventListener("message", function(event) {    
+window.addEventListener("message", function(event) {
     if(event.data.type && event.data.type==='FROM_PAGE') {
         if(event?.data?.mobxVisualizerData?.mobxVisualizer) {
             // eslint-disable-next-line no-undef

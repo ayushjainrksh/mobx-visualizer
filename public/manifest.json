@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "manifest_version": 3,
   "permissions": [
-    "tabs",
     "activeTab",
     "http://*/*", 
-    "https://*/*",
-    "scripting"
+    "https://*/*"
   ],
   "action": {
     "default_popup": "index.html"

@@ -83,11 +83,10 @@ const stringify = (value, replacer, space) => {
     }
     const after = $.call(this, key, value);
     switch (typeof after) {
-    case object:
-      if (after === null) return after;
-      break;
-    case primitive:
-      return known.get(after) || set(known, input, after);
+      case object:
+        if (after === null) return after;
+      case primitive:
+        return known.get(after) || set(known, input, after);
     }
     return after;
   }
@@ -109,8 +108,8 @@ function getMobxStoreData () {
 }
 
 function attachStateChangeEventListener () {
-  const currentStoreState = parseStore(window.__MOBX_VISUALIZER__) || {},
-    prevStoreState = parseStore(window.__MOBX_VISUALIZER_PREV__) || {};
+  const currentStoreState = window.__MOBX_VISUALIZER__ || {},
+    prevStoreState = window.__MOBX_VISUALIZER_PREV__ || {};
 
   for(const storeKey in currentStoreState) {
     const currentState = currentStoreState[storeKey];

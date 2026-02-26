@@ -3,6 +3,8 @@ import { JSONTree } from 'react-json-tree';
 import { parse } from 'flatted';
 import './styles/States.css';
 
+const STORAGE_KEY = 'mobxVisualizerState';
+
 const sampleData = {
   mobxVisualizer: {
     sampleStore: {
@@ -22,6 +24,18 @@ const States = (): React.JSX.Element => {
   const filteredStores = filters ? mobxStore[filters] : mobxStore;
 
   useEffect(() => {
+    chrome?.storage?.local?.get(STORAGE_KEY, (result) => {
+      const cached = result?.[STORAGE_KEY];
+      if (cached?.mobxStore) {
+        setMobxStore(cached.mobxStore);
+        setFilters(cached.filters ?? '');
+        setSearchValue(cached.searchValue ?? '');
+        setIsLoading(false);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     chrome?.runtime?.onMessage &&
       chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         if (message?.mobxVisualizerData?.mobxVisualizer) {
@@ -29,9 +43,8 @@ const States = (): React.JSX.Element => {
             { active: true, lastFocusedWindow: true },
             ([tab]) => {
               if (tab.id === sender?.tab?.id) {
-                setMobxStore(
-                  parse(message?.mobxVisualizerData?.mobxVisualizer),
-                );
+                const parsed = parse(message?.mobxVisualizerData?.mobxVisualizer);
+                setMobxStore(parsed);
                 setIsLoading(false);
               }
             },
@@ -39,6 +52,13 @@ const States = (): React.JSX.Element => {
         }
       });
   }, []);
+
+  useEffect(() => {
+    if (isLoading) return;
+    void chrome?.storage?.local?.set({
+      [STORAGE_KEY]: { mobxStore, filters, searchValue },
+    });
+  }, [mobxStore, filters, searchValue, isLoading]);
 
   const renderStores = (): React.JSX.Element[] => {
     const storeList = [];

@@ -9,6 +9,9 @@ function injectScript(file_path, tag) {
 // eslint-disable-next-line no-undef
 injectScript(chrome.runtime.getURL('scripts/inject-script.js'), 'body');
 
+// eslint-disable-next-line no-undef
+chrome.runtime.sendMessage(chrome.runtime.id, { pageLoaded: true });
+
 window.addEventListener('message', function(event) {
   if(event.data.type && event.data.type === 'FROM_PAGE') {
     if(event?.data?.mobxVisualizerData?.mobxVisualizer) {

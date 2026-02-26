@@ -1,12 +1,12 @@
 .App {
-    width: 600px;
-    height: 400px;
-    color: rgb(0, 0, 0);
-    background-color: aliceblue;
+  width: 600px;
+  height: 400px;
+  color: rgb(0, 0, 0);
+  background-color: aliceblue;
 }
 
 .App__header {
-    font-size: 30px;
-    text-align: center;
-    padding-top: 10px;
+  font-size: 30px;
+  text-align: center;
+  padding-top: 10px;
 }

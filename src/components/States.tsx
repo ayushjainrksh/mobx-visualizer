@@ -47,15 +47,24 @@ const States = (): React.JSX.Element => {
   };
 
   useEffect(() => {
-    chrome?.tabs?.query(
-      { active: true, lastFocusedWindow: true },
-      ([tab]) => {
-        if (tab?.id != null) {
-          activeTabIdRef.current = tab.id;
-          loadCachedState(tab.id);
-        }
-      },
-    );
+    const params = new URLSearchParams(window.location.search);
+    const tabIdFromUrl = params.get('tabId');
+
+    if (tabIdFromUrl != null) {
+      const tabId = Number(tabIdFromUrl);
+      activeTabIdRef.current = tabId;
+      loadCachedState(tabId);
+    } else {
+      chrome?.tabs?.query(
+        { active: true, lastFocusedWindow: true },
+        ([tab]) => {
+          if (tab?.id != null) {
+            activeTabIdRef.current = tab.id;
+            loadCachedState(tab.id);
+          }
+        },
+      );
+    }
 
     chrome?.tabs?.onActivated?.addListener((activeInfo) => {
       activeTabIdRef.current = activeInfo.tabId;

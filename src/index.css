@@ -10,6 +10,11 @@ body {
   height: 400px;
 }
 
+body.standalone {
+  width: 100%;
+  height: 100vh;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
